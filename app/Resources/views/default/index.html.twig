@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#users">Users&nbsp;</a></li>
+                <li><a data-toggle="tab" href="#groups">Groups&nbsp;</a></li>
+                <li><a data-toggle="tab" href="#report">Report&nbsp;</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="users" class="tab-pane fade in active">
+                    <h3>Users</h3>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Group</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr class="user_view">
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.group.name }}</td>
+                                <td>
+                                    <button class="delete_user" data-id="{{ user.id }}">Delete</button>
+                                    <button class="edit_user" data-id="{{ user.id }}">Edit</button>
+                                </td>
+                            </tr>
+                            <tr class="user_edit">
+                                <form class="user_form" data-id="{{ user.id }}">
+                                    <td><input type="text" name="name" value="{{ user.name }}"></td>
+                                    <td><input type="text" name="email" value="{{ user.email }}"></td>
+                                    <td><select name="group" id="user_group">
+                                            {% for group in groups %}
+                                                {% if group.id == user.group.id %}
+                                                    <option selected="selected"
+                                                            value="{{ group.id }}">{{ group.name }}</option>
+                                                {% else %}
+                                                    <option value="{{ group.id }}">{{ group.name }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button class="save_user">Save</button>
+                                        <button class="cancel_user">Cancel</button>
+                                    </td>
+                                </form>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <form class="user_form">
+                                <td><input type="text" name="name"></td>
+                                <td><input type="text" name="email"></td>
+                                <td><select name="group" id="user_group">
+                                        {% for group in groups %}
+                                            <option value="{{ group.id }}">{{ group.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <button class="save_user">Save</button>
+                                </td>
+                            </form>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="groups" class="tab-pane fade">
+                    <h3>Groups</h3>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for group in groups %}
+                            <tr>
+                                <td>{{ group.name }}</td>
+                                <td>
+                                    <button class="delete_group" data-id="{{ group.id }}">Delete</button>
+                                    <button class="edit_group" data-id="{{ group.id }}">Edit</button>
+                                </td>
+                            </tr>
+                            <tr class="group_edit">
+                                <form class="group_form" data-id="{{ group.id }}">
+                                    <td>
+                                        <select name="name" id="user_group">
+                                            {% for group in groups %}
+                                                <option value="{{ group.id }}">{{ group.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <input type="text" name="name" value="{{ group.name }}"></td>
+                                    <td>
+                                        <button class="save_group" data-id="{{ group.id }}">Save</button>
+                                        <button class="cancel_group" data-id="{{ group.id }}">Cancel</button>
+                                    </td>
+                                </form>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <form class="group_form">
+                                <td><input type="text" name="name"></td>
+                                <td>
+                                    <button class="save_group">Save</button>
+                                </td>
+                            </form>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                 <div id="report" class="tab-pane fade">
+                    <h3>Groups</h3>
+                     <form class="report">
+                         <select name="group">
+                             {% for group in groups %}
+                                 <option value="{{ group.id }}">{{ group.name }}</option>
+                             {% endfor %}
+                         </select>
+                         <button class="report">Generate</button>
+                     </form>
+                     <table class="table table-striped" id="user_report">
+                         <thead>
+                         <tr>
+                             <th>Name</th>
+                             <th>Email</th>
+                             <th>Group</th>
+                         </tr>
+                         </thead>
+                         <tbody>
+                         </tbody>
+                     </table>
+                 </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}"/>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+{% endblock %}
